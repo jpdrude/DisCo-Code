@@ -1,15 +1,9 @@
-# Project DisCo
-
-## Discrete Choreography
-Project DisCo is an application to integrate bottom-up aggregation of 
-modular building blocks and intuitive spatial design into Virtual Reality (VR).
-It allows the designer to choreograph large amounts of building blocks 
-interactively through physics simulations as a means of form generation.
-
-## License
+﻿/*
 Project DisCo (Discrete Choreography) (GPL) initiated by Jan Philipp Drude
 
-Copyright (c) 2019, Jan Philipp Drude <jpdrude@gmail.com>
+This file is part of Project DisCo.
+
+Copyright (c) 2021, Jan Philipp Drude <jpdrude@gmail.com>
 
 A full build of Project DisCo is available at <http://www.project-disco.com>
 
@@ -32,10 +26,59 @@ If not, see <http://www.gnu.org/licenses/>.
 The Project DisCo base classes build on Wasp developed by Andrea Rossi.
 You can find Wasp at: <https://github.com/ar0551/Wasp>
 
-## Credits
-
 Significant parts of Project DisCo have been developed by Jan Philipp Drude
 as part of research on virtual reality, digital materials and 
-discrete design at: <br/>
-[dMA](https://www.dma.uni-hannover.de/) - digital Methods in Architecture - Prof. Mirco Becker <br/>
+discrete design at: 
+dMA - digital Methods in Architecture - Prof. Mirco Becker
 Leibniz University Hannover
+*/
+
+using Bolt;
+using Bolt.Utils;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+
+/*
+ * Simple Part Token to send Parts through Network
+ */
+
+public class PartToken : IProtocolToken
+{
+    public int TemplateID { get; set; }
+    public int ID { get; set; }
+
+    public bool Disabled { get; set; }
+
+    public PartToken()
+    {
+        ID = -1;
+    }
+
+    public PartToken(int templateID, int id, bool disabled)
+    {
+        TemplateID = templateID;
+        ID = id;
+        Disabled = disabled;
+    }
+
+    public PartToken(Part part)
+    {
+        TemplateID = part.TemplateID;
+        ID = part.ID;
+        Disabled = part.Disabled;
+    }
+
+    public void Read(UdpKit.UdpPacket packet)
+    {
+        TemplateID = packet.ReadInt();
+        ID = packet.ReadInt();
+        Disabled = packet.ReadBool();
+    }
+
+    public void Write(UdpKit.UdpPacket packet)
+    {
+        packet.WriteInt(TemplateID);
+        packet.WriteInt(ID);
+        packet.WriteBool(Disabled);
+    }
+}

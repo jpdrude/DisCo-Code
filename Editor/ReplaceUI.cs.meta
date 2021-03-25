@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 53b4e80e70fa1fa47960dc6d6fbe14ff
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - UISprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - Background: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  - Knob: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - dropdownArrow: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  - check: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  - font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

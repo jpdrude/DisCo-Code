@@ -1,15 +1,9 @@
-# Project DisCo
-
-## Discrete Choreography
-Project DisCo is an application to integrate bottom-up aggregation of 
-modular building blocks and intuitive spatial design into Virtual Reality (VR).
-It allows the designer to choreograph large amounts of building blocks 
-interactively through physics simulations as a means of form generation.
-
-## License
+﻿/*
 Project DisCo (Discrete Choreography) (GPL) initiated by Jan Philipp Drude
 
-Copyright (c) 2019, Jan Philipp Drude <jpdrude@gmail.com>
+This file is part of Project DisCo.
+
+Copyright (c) 2021, Jan Philipp Drude <jpdrude@gmail.com>
 
 A full build of Project DisCo is available at <http://www.project-disco.com>
 
@@ -32,10 +26,52 @@ If not, see <http://www.gnu.org/licenses/>.
 The Project DisCo base classes build on Wasp developed by Andrea Rossi.
 You can find Wasp at: <https://github.com/ar0551/Wasp>
 
-## Credits
-
 Significant parts of Project DisCo have been developed by Jan Philipp Drude
 as part of research on virtual reality, digital materials and 
-discrete design at: <br/>
-[dMA](https://www.dma.uni-hannover.de/) - digital Methods in Architecture - Prof. Mirco Becker <br/>
+discrete design at: 
+dMA - digital Methods in Architecture - Prof. Mirco Becker
 Leibniz University Hannover
+*/
+
+using System.Collections.Generic;
+using UnityEngine;
+
+/*
+ * Toolitem: Recursive Delete
+ * 
+ * Deletes chosen Part and all of its children
+ */
+
+public class TIRecDelete : TIDelete
+{
+    private void Update()
+    {
+        CastDeleteRay(true);
+    }
+    public override void Click()
+    {
+        if (ToDelete != null)
+            RecDelete(ToDelete);
+    }
+
+    public override void ActivateItem()
+    {
+        base.ActivateItem();
+        PlacementReferences.PlacementType = PlacementReferences.PlaceChoreo.RecDelete;
+    }
+
+    void RecDelete(GameObject toDelete)
+    {
+        List<int> child = toDelete.GetComponent<Part>().Children;
+
+        DeletePart(toDelete);
+
+        foreach (int i in child)
+        {
+            if (GlobalReferences.FrozenParts[i] != null)
+            {
+                RecDelete(GlobalReferences.FrozenParts[i]);
+            }
+        }
+    }
+}
